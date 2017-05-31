@@ -1,0 +1,7 @@
+<?php namespace {NAMESPACE};
+
+use Ixyz\Landbaron\App\Controller;
+
+class {CLASS} extends Controller {
+
+}

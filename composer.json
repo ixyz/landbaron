@@ -1,0 +1,21 @@
+{
+    "name": "ixyz/landbaron",
+    "description": "Landbaron is Maverick modules",
+    "version": "1.0.0",
+    "type": "library",
+    "license": "MIT",
+    "authors": [{
+        "name": "Hiroiku Inoue",
+        "email": "hiroiku@ixyz.jp"
+    }],
+    "require": {
+        "php": ">=5.6.4",
+        "illuminate/events": "~5",
+        "illuminate/view": "~5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ixyz\\Landbaron\\": "src"
+        }
+    }
+}
