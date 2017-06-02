@@ -25,7 +25,7 @@ class Application
         Autoload::instance($appPath)->register();
     }
 
-    public function run()
+    public function execute()
     {
         $namespace = $this->config->get('app', 'namespace.controller');
         $paths = Path::absolutes($this->directory, $this->config->get('view', 'paths'));
