@@ -1,4 +1,4 @@
-<?php namespace Ixyz\Landbaron\Core\Response;
+<?php namespace Ixyz\Landbaron\Response;
 
 class Json
 {

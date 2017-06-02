@@ -2,7 +2,7 @@
 
 use \Exception;
 use Ixyz\Landbaron\Brand\Command;
-use Ixyz\Landbaron\Core\Config;
+use Ixyz\Landbaron\Config;
 use Ixyz\Landbaron\IO\Path;
 
 class View

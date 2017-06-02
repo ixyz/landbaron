@@ -1,4 +1,4 @@
-<?php namespace Ixyz\Landbaron\Core\Response;
+<?php namespace Ixyz\Landbaron\Response;
 
 use Ixyz\Landbaron\Laravel\Blade;
 
@@ -6,7 +6,7 @@ class View
 {
     private $resource = '';
     private $cache = '';
-    private $views = [];
+    private $view = '';
     private $values = [];
 
     /**
@@ -16,23 +16,23 @@ class View
      * @param string $values
      * @return View
      */
-    public static function instance($resource, $cache, $views, $values)
+    public static function instance($resource, $cache, $view, $values)
     {
-        return new static($resource, $cache, $views, $values);
+        return new static($resource, $cache, $view, $values);
     }
 
     /**
      * @param string $resource
      * @param string $cache
-     * @param string $views
-     * @param string $values
+     * @param string $view
+     * @param mixed $values
      * @return void
      */
-    private function __construct($resource, $cache, $views, $values)
+    private function __construct($resource, $cache, $view, $values)
     {
         $this->resource = $resource;
         $this->cache = $cache;
-        $this->views = $views;
+        $this->view = $view;
         $this->values = $values;
     }
 
@@ -43,11 +43,11 @@ class View
     {
         $blade = Blade::instance($this->resource, $this->cache);
 
-        echo $blade->view()->make($this->views, $this->values)->render();
+        echo $blade->view()->make($this->view, $this->values)->render();
     }
 
     /**
-     * @return mixed[]
+     * @return mixed
      */
     public function invoke()
     {

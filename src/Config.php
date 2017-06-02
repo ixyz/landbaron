@@ -1,4 +1,4 @@
-<?php namespace Ixyz\Landbaron\Core;
+<?php namespace Ixyz\Landbaron;
 
 use Ixyz\Landbaron\IO\Path;
 

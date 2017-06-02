@@ -1,13 +1,15 @@
 <?php namespace Ixyz\Landbaron\App;
 
-use Ixyz\Landbaron\Core\Invoke;
-use Ixyz\Landbaron\Core\Response;
+use Ixyz\Landbaron\App\Invoke;
+use Ixyz\Landbaron\App\Response;
+use Ixyz\Landbaron\Http\Input;
 use Ixyz\Landbaron\WP\Post;
 
 abstract class Controller
 {
     private $id = null;
     private $post = null;
+    private $input = null;
     private $resource = '';
     private $cache = '';
 
@@ -20,6 +22,20 @@ abstract class Controller
     {
         $this->resource = $resource;
         $this->cache = $cache;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    protected function input()
+    {
+        if ($this->input === null) {
+            $this->input = Input::instance();
+        }
+
+        return $this->input;
     }
 
     /**
