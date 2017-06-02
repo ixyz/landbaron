@@ -1,9 +1,9 @@
-<?php namespace Ixyz\Landbaron\Core;
+<?php namespace Ixyz\Landbaron;
 
 use App\Router;
 use Ixyz\Landbaron\App\Autoload;
-use Ixyz\Landbaron\Core\Response\Json;
-use Ixyz\Landbaron\Core\Response\View;
+use Ixyz\Landbaron\Response\Json;
+use Ixyz\Landbaron\Response\View;
 use Ixyz\Landbaron\IO\Path;
 
 class Application

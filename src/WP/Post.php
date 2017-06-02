@@ -1,6 +1,7 @@
 <?php namespace Ixyz\Landbaron\WP;
 
 use \WP_Post;
+use Ixyz\Landbaron\WP\Meta;
 
 class Post
 {

@@ -1,8 +1,7 @@
-<?php namespace Ixyz\Landbaron\Core;
+<?php namespace Ixyz\Landbaron\App;
 
-use Ixyz\Landbaron\Core\Response\Json;
-use Ixyz\Landbaron\Core\Response\View;
-use Ixyz\Landbaron\Core\Response\Xml;
+use Ixyz\Landbaron\Response\Json;
+use Ixyz\Landbaron\Response\View;
 
 class Response
 {
@@ -33,7 +32,7 @@ class Response
      * @param mixed $value
      * @return View
      */
-    public function view($view, $value = null)
+    public function view($view, $value = [])
     {
         return View::instance($this->resource, $this->cache, $view, $value);
     }
