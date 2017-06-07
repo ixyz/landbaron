@@ -45,7 +45,7 @@ class Route
      */
     public function filter($name, $route, ...$args)
     {
-        $this->filter[$name][] = Thread::instance($route, $args);
+        $this->filters[$name][] = Thread::instance($route, $args);
     }
 
     /**
