@@ -85,7 +85,7 @@ class Application
     {
         $threads = $this->router->getTemplates();
 
-        add_action('shutdown', function () use ($namespace, $paths, $compiled, $threads) {
+        add_filter('template_include', function ($template) use ($namespace, $paths, $compiled, $threads) {
             foreach ($threads as $name => $thread) {
                 if (self::detect($name)) {
                     $controller = $namespace.$thread->getController();
@@ -96,15 +96,17 @@ class Application
 
                     if ($response instanceof View) {
                         $response->render();
-                        return;
+                        return $template;
                     }
 
                     if ($response instanceof Json) {
                         $response->render();
-                        return;
+                        return $template;
                     }
                 }
             }
+
+            return $template;
         });
     }
 
