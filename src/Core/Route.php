@@ -4,7 +4,7 @@ use Ixyz\Landbaron\Core\Thread;
 
 class Route
 {
-    private $functions = [];
+    private $funcs = [];
     private $actions = [];
     private $filters = [];
     private $templates = [];
@@ -21,9 +21,9 @@ class Route
      * @param string $route
      * @return void
      */
-    public function function($route, ...$args)
+    public function func($route, ...$args)
     {
-        $this->functions[] = Thread::instance($route, $args);
+        $this->funcs[] = Thread::instance($route, $args);
     }
 
     /**
@@ -63,7 +63,7 @@ class Route
      */
     public function getFunctions()
     {
-        return $this->functions;
+        return $this->funcs;
     }
 
     /**
