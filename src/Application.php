@@ -31,11 +31,40 @@ class Application
         $paths = Path::absolutes($this->directory, $this->config->get('view', 'paths'));
         $compiled = Path::resolve($this->directory, $this->config->get('view', 'compiled'));
 
-        $this->router = Router::register();
+        $this->router = Router::register(Route::instance());
         $this->functionThreading($namespace, $paths, $compiled);
         $this->actionThreading($namespace, $paths, $compiled);
         $this->filterThreading($namespace, $paths, $compiled);
         $this->templateThreading($namespace, $paths, $compiled);
+        $this->configThreading();
+    }
+
+    private function configThreading()
+    {
+        // Theme support
+        $themeSupports = $this->config->get('theme');
+        foreach ($themeSupports as $themeSupport) {
+            call_user_func_array('add_theme_support', $themeSupport);
+        }
+
+        // Remove action hooks
+        $actions = $this->config->get('removehook', 'action');
+        foreach ($actions as $action) {
+            call_user_func_array('remove_action', $action);
+        }
+
+        // Remove filter hooks
+        $filters = $this->config->get('removehook', 'filter');
+        foreach ($filters as $filter) {
+            call_user_func_array('remove_filter', $filter);
+        }
+
+        // Mime types allowed for upload
+        add_filter('upload_mimes', function ($type) {
+            $mime = $this->config->get('mime');
+
+            return array_merge($type, $mime);
+        });
     }
 
     private function functionThreading($namespace, $paths, $compiled)
@@ -43,40 +72,34 @@ class Application
         $threads = $this->router->getFunctions();
 
         foreach ($threads as $thread) {
-            $controller = $namespace.$thread->getController();
-            $action = $thread->getAction();
+            $callback = $thread->getCallback($namespace, $paths, $compiled);
             $args = $thread->getParams();
-            $instance = new $controller($paths, $compiled);
-            call_user_func_array([$instance, $action], $args);
+            call_user_func_array('add_action', array_merge([$name, $callback], $args));
         }
     }
 
     private function actionThreading($namespace, $paths, $compiled)
     {
-        $threads = $this->router->getActions();
+        $actions = $this->router->getActions();
 
-        foreach ($threads as $name => $thread) {
-            foreach ($thread as $function) {
-                $controller = $namespace.$function->getController();
-                $action = $function->getAction();
-                $args = $function->getParams();
-                $instance = new $controller($paths, $compiled);
-                call_user_func_array('add_action', array_merge([$name, [$instance, $action]], $args));
+        foreach ($actions as $name => $threads) {
+            foreach ($threads as $thread) {
+                $callback = $thread->getCallback($namespace, $paths, $compiled);
+                $args = $thread->getParams();
+                call_user_func_array('add_action', array_merge([$name, $callback], $args));
             }
         }
     }
 
     private function filterThreading($namespace, $paths, $compiled)
     {
-        $threads = $this->router->getFilters();
+        $filters = $this->router->getFilters();
 
-        foreach ($threads as $name => $thread) {
-            foreach ($thread as $function) {
-                $controller = $namespace.$function->getController();
-                $action = $function->getAction();
-                $args = $function->getParams();
-                $instance = new $controller($paths, $compiled);
-                call_user_func_array('add_filter', array_merge([$name, [$instance, $action]], $args));
+        foreach ($filters as $name => $threads) {
+            foreach ($threads as $thread) {
+                $callback = $thread->getCallback($namespace, $paths, $compiled);
+                $args = $thread->getParams();
+                call_user_func_array('add_action', array_merge([$name, $callback], $args));
             }
         }
     }
@@ -88,11 +111,9 @@ class Application
         add_filter('template_include', function ($template) use ($namespace, $paths, $compiled, $threads) {
             foreach ($threads as $name => $thread) {
                 if (self::detect($name)) {
-                    $controller = $namespace.$thread->getController();
-                    $action = $thread->getAction();
+                    $callback = $thread->getCallback($namespace, $paths, $compiled);
                     $args = $thread->getParams();
-                    $instance = new $controller($paths, $compiled);
-                    $response = call_user_func_array([$instance, $action], $args);
+                    $response = call_user_func_array($callback, $args);
 
                     if ($response instanceof View) {
                         $response->render();
