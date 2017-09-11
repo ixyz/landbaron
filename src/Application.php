@@ -48,20 +48,20 @@ class Application
         }
 
         // Remove action hooks
-        $actions = $this->config->get('removehook', 'action');
+        $actions = $this->config->get('hooks', 'action');
         foreach ($actions as $action) {
             call_user_func_array('remove_action', $action);
         }
 
         // Remove filter hooks
-        $filters = $this->config->get('removehook', 'filter');
+        $filters = $this->config->get('hooks', 'filter');
         foreach ($filters as $filter) {
             call_user_func_array('remove_filter', $filter);
         }
 
         // Mime types allowed for upload
         add_filter('upload_mimes', function ($type) {
-            $mime = $this->config->get('mime');
+            $mime = $this->config->get('mimes');
 
             return array_merge($type, $mime);
         });
