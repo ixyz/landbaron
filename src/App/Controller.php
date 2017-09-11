@@ -39,7 +39,7 @@ abstract class Controller
     }
 
     /**
-     * @return mixed
+     * @return Response
      */
     protected function response()
     {
@@ -47,7 +47,7 @@ abstract class Controller
     }
 
     /**
-     * @return void
+     * @return Invoke
      */
     protected function invoke()
     {

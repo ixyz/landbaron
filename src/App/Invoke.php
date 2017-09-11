@@ -8,8 +8,9 @@ class Invoke
     private $cache = null;
 
     /**
-     * @param Controller $controller
-     * @return Response
+     * @param string $resource
+     * @param string $cache
+     * @return Invoke
      */
     public static function instance($resource, $cache)
     {
@@ -29,7 +30,7 @@ class Invoke
     /**
      * @param string[] $view
      * @param mixed $value
-     * @return mixed
+     * @return View
      */
     public function view($view, $value = [])
     {

@@ -39,15 +39,20 @@ class View
     /**
      * @return string
      */
-    public function render()
+    public function render($render = true)
     {
         $blade = Blade::instance($this->resource, $this->cache);
+        $renderd = $blade->view()->make($this->view, $this->values)->render();
 
-        echo $blade->view()->make($this->view, $this->values)->render();
+        if ($render || $render === '') {
+            echo $renderd;
+        }
+
+        return $renderd;
     }
 
     /**
-     * @return mixed
+     * @return array
      */
     public function invoke()
     {
